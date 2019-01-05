@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{69DDADC0-97F4-419E-86EB-C91781A0D2E0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>gearboxdll</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(Configuration)\$(ProjectName)\int\</IntDir>
+    <TargetName>opfor</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(Configuration)\$(ProjectName)\int\</IntDir>
+    <TargetName>opfor</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;QUIVER;VOXEL;QUAKE2;VALVE_DLL;CLIENT_WEAPONS;%(PreprocessorDefinitions);GEARBOX_DLL</PreprocessorDefinitions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AdditionalIncludeDirectories>..\..\gearbox\dlls;..\..\gearbox\dlls\hl;..\..\gearbox\dlls\gearbox;..\..\engine;..\..\common;..\..\gearbox\pm_shared;..\..\game_shared;..\..\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4018;4091;4474;4477;4996;</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>$(ProjectDir)..\..\gearbox\dlls\opfor.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>call ..\..\filecopy.bat $(TargetPath) ..\..\..\game\mod\dlls\$(TargetName).dll
+call ..\..\filecopy.bat $(TargetDir)\$(TargetName).pdb ..\..\..\game\mod\dlls\$(TargetName).pdb</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Performing Post-Build Event</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;QUIVER;VOXEL;QUAKE2;VALVE_DLL;CLIENT_WEAPONS;%(PreprocessorDefinitions);GEARBOX_DLL</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\gearbox\dlls;..\..\gearbox\dlls\hl;..\..\gearbox\dlls\gearbox;..\..\engine;..\..\common;..\..\gearbox\pm_shared;..\..\game_shared;..\..\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4018;4091;4474;4477;4996;</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>$(ProjectDir)..\..\gearbox\dlls\opfor.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>call ..\..\filecopy.bat $(TargetPath) ..\..\..\game\mod\dlls\$(TargetName).dll
+call ..\..\filecopy.bat $(TargetDir)\$(TargetName).pdb ..\..\..\game\mod\dlls\$(TargetName).pdb</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Performing Post-Build Event</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\gearbox\dlls\aflock.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\agrunt.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\airtank.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\animating.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\animation.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\apache.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\barnacle.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\barney.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\bigmomma.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\bloater.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\bmodels.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\bullsquid.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\buttons.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\cbase.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\combat.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\controller.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\crossbow.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\crowbar.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\defaultai.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\doors.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\effects.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\egon.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\explode.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\flyingmonster.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\func_break.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\func_tank.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\game.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gamerules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gargantua.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gauss.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\blkop_apache.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\blkop_osprey.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\cleansuit_scientist.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\ctf_gamerules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\ctf_items.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\ctf_powerups.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\displacer.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\drillsergeant.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\eagle.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\fgrunt.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\fgrunt_medic.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\fgrunt_torch.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\func_tank_of.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gearbox_client.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gearbox_effects.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gearbox_subs.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gearbox_triggers.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gearbox_utils.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\generic_items.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\geneworm.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\gonome.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\grapple.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\grapple_tonguetip.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\houndeye_dead.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\islave_dead.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\knife.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\loader.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\m249.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\massn.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\nuclearbomb.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\otis.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\penguin.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\pipewrench.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\pitdrone.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\pitworm.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\recruit.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\ropes.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\shock.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\shockrifle.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\shockroach.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\skeleton.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\sniperrifle.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\sporegrenade.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\sporelauncher.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\spore_ammo.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\strooper.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\voltigore.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\zombie_barney.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gearbox\zombie_soldier.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\genericmonster.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\ggrenade.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\globals.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\gman.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\handgrenade.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\hassassin.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\headcrab.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\healthkit.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\hgrunt.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\hornet.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\hornetgun.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\houndeye.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\h_ai.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\h_battery.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\h_cine.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\h_cycler.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\h_export.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\ichthyosaur.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\islave.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\items.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\leech.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\lights.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\maprules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\monstermaker.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\monsters.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\monsterstate.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\mortar.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\mp5.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\multiplay_gamerules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\nihilanth.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\nodes.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\observer.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\osprey.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\pathcorner.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\plane.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\plats.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\player.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\python.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\rat.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\roach.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\rpg.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\satchel.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\schedule.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\scientist.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\scripted.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\shotgun.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\singleplay_gamerules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\skill.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\sound.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\soundent.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\spectator.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\squadmonster.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\squeakgrenade.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\subs.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\talkmonster.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\teamplay_gamerules.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\tempmonster.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\tentacle.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\triggers.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\tripmine.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\turret.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\util.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\weapons.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\world.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\wpn_shared\hl_wpn_glock.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\xen.cpp" />
+    <ClCompile Include="..\..\gearbox\dlls\zombie.cpp" />
+    <ClCompile Include="..\..\game_shared\voice_gamemgr.cpp" />
+    <ClCompile Include="..\..\gearbox\pm_shared\pm_debug.c" />
+    <ClCompile Include="..\..\gearbox\pm_shared\pm_math.c" />
+    <ClCompile Include="..\..\gearbox\pm_shared\pm_shared.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\gearbox\dlls\activity.h" />
+    <ClInclude Include="..\..\gearbox\dlls\activitymap.h" />
+    <ClInclude Include="..\..\gearbox\dlls\animation.h" />
+    <ClInclude Include="..\..\gearbox\dlls\basemonster.h" />
+    <ClInclude Include="..\..\gearbox\dlls\cbase.h" />
+    <ClInclude Include="..\..\gearbox\dlls\cdll_dll.h" />
+    <ClInclude Include="..\..\gearbox\dlls\client.h" />
+    <ClInclude Include="..\..\gearbox\dlls\decals.h" />
+    <ClInclude Include="..\..\gearbox\dlls\defaultai.h" />
+    <ClInclude Include="..\..\gearbox\dlls\doors.h" />
+    <ClInclude Include="..\..\gearbox\dlls\effects.h" />
+    <ClInclude Include="..\..\gearbox\dlls\enginecallback.h" />
+    <ClInclude Include="..\..\gearbox\dlls\explode.h" />
+    <ClInclude Include="..\..\gearbox\dlls\extdll.h" />
+    <ClInclude Include="..\..\gearbox\dlls\flyingmonster.h" />
+    <ClInclude Include="..\..\gearbox\dlls\func_break.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gamerules.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\ctf_gamerules.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\ctf_items.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\ctf_powerups.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\fgrunt.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\gearbox_explode.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\gearbox_monsters.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\gearbox_player.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\gearbox_utils.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\gearbox_weapons.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\grapple_tonguetip.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\shockroach.h" />
+    <ClInclude Include="..\..\gearbox\dlls\gearbox\sporegrenade.h" />
+    <ClInclude Include="..\..\gearbox\dlls\hornet.h" />
+    <ClInclude Include="..\..\gearbox\dlls\items.h" />
+    <ClInclude Include="..\..\gearbox\dlls\monsterevent.h" />
+    <ClInclude Include="..\..\gearbox\dlls\monsters.h" />
+    <ClInclude Include="..\..\gearbox\dlls\nodes.h" />
+    <ClInclude Include="..\..\gearbox\dlls\plane.h" />
+    <ClInclude Include="..\..\gearbox\dlls\player.h" />
+    <ClInclude Include="..\..\gearbox\dlls\saverestore.h" />
+    <ClInclude Include="..\..\gearbox\dlls\schedule.h" />
+    <ClInclude Include="..\..\gearbox\dlls\scripted.h" />
+    <ClInclude Include="..\..\gearbox\dlls\scriptevent.h" />
+    <ClInclude Include="..\..\gearbox\dlls\skill.h" />
+    <ClInclude Include="..\..\gearbox\dlls\soundent.h" />
+    <ClInclude Include="..\..\gearbox\dlls\spectator.h" />
+    <ClInclude Include="..\..\gearbox\dlls\squadmonster.h" />
+    <ClInclude Include="..\..\gearbox\dlls\talkmonster.h" />
+    <ClInclude Include="..\..\gearbox\dlls\teamplay_gamerules.h" />
+    <ClInclude Include="..\..\gearbox\dlls\trains.h" />
+    <ClInclude Include="..\..\gearbox\dlls\util.h" />
+    <ClInclude Include="..\..\gearbox\dlls\vector.h" />
+    <ClInclude Include="..\..\gearbox\dlls\weapons.h" />
+    <ClInclude Include="..\..\engine\eiface.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_debug.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_defs.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_info.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_materials.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_movevars.h" />
+    <ClInclude Include="..\..\gearbox\pm_shared\pm_shared.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

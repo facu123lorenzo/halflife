@@ -164,8 +164,9 @@ inline void PlaySound( int iSound, float vol ) { gEngfuncs.pfnPlaySoundByIndex( 
 
 #define max(a, b)  (((a) > (b)) ? (a) : (b))
 #define min(a, b)  (((a) < (b)) ? (a) : (b))
+#if _MSC_VER < 1910 // Visual Studio 2017
 #define fabs(x)	   ((x) > 0 ? (x) : 0 - (x))
-
+#endif
 void ScaleColors( int &r, int &g, int &b, int a );
 
 #define DotProduct(x,y) ((x)[0]*(y)[0]+(x)[1]*(y)[1]+(x)[2]*(y)[2])
