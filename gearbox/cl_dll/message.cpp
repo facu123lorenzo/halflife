@@ -48,7 +48,10 @@ int CHudMessage::VidInit( void )
 {
 	m_HUD_title_half = gHUD.GetSpriteIndex( "title_half" );
 	m_HUD_title_life = gHUD.GetSpriteIndex( "title_life" );
-
+#if defined (GEARBOX_CLIENT_DLL)
+	m_HUD_title_opposing = gHUD.GetSpriteIndex("title_opposing");
+	m_HUD_title_force = gHUD.GetSpriteIndex("title_force");
+#endif
 	return 1;
 };
 
@@ -337,10 +340,42 @@ int CHudMessage::Draw( float fTime )
 		{
 			brightness = FadeBlend( m_pGameTitle->fadein, m_pGameTitle->fadeout, m_pGameTitle->holdtime, localTime );
 
+#if defined (GEARBOX_CLIENT_DLL)
+			// Get every game title logo.
+			wrect_t* rect_title_half = &gHUD.GetSpriteRect(m_HUD_title_half);
+			wrect_t* rect_title_life = &gHUD.GetSpriteRect(m_HUD_title_life);
+			wrect_t* rect_title_opposing = &gHUD.GetSpriteRect(m_HUD_title_opposing);
+			wrect_t* rect_title_force = &gHUD.GetSpriteRect(m_HUD_title_force);
+
+			// Calculate the total width of each horizontal slice of the entire game title.
+			int full_half_life_width = rect_title_half->right - rect_title_half->left
+				+ rect_title_life->right - rect_title_life->left;
+			int full_opposing_force_width = rect_title_opposing->right - rect_title_opposing->left
+				+ rect_title_force->right - rect_title_force->left;
+			
+			// Determine which horizontal slice is the largest.
+			// This is needed for centering the game logo.
+			int fullWidth = full_half_life_width > full_opposing_force_width 
+				? full_half_life_width
+				: full_opposing_force_width;
+
+			// Determine the same as above, but for each vertical slice.
+			int full_half_opposing_height = rect_title_half->bottom - rect_title_half->top
+				+ rect_title_opposing->bottom - rect_title_opposing->top;
+			int full_life_force_height = rect_title_life->bottom - rect_title_life->top
+				+ rect_title_force->bottom - rect_title_force->top;
+		
+			int fullHeight = full_half_opposing_height > full_life_force_height
+				? full_half_opposing_height
+				: full_life_force_height;
+
+			int halfWidth = fullWidth / 2;
+			int halfHeight = fullHeight / 2;
+#else
 			int halfWidth = gHUD.GetSpriteRect(m_HUD_title_half).right - gHUD.GetSpriteRect(m_HUD_title_half).left;
 			int fullWidth = halfWidth + gHUD.GetSpriteRect(m_HUD_title_life).right - gHUD.GetSpriteRect(m_HUD_title_life).left;
 			int fullHeight = gHUD.GetSpriteRect(m_HUD_title_half).bottom - gHUD.GetSpriteRect(m_HUD_title_half).top;
-
+#endif
 			int x = XPosition( m_pGameTitle->x, fullWidth, fullWidth );
 			int y = YPosition( m_pGameTitle->y, fullHeight );
 
@@ -351,6 +386,14 @@ int CHudMessage::Draw( float fTime )
 			SPR_Set( gHUD.GetSprite(m_HUD_title_life), brightness * m_pGameTitle->r1, brightness * m_pGameTitle->g1, brightness * m_pGameTitle->b1 );
 			SPR_DrawAdditive( 0, x + halfWidth, y, &gHUD.GetSpriteRect(m_HUD_title_life) );
 
+#if defined (GEARBOX_CLIENT_DLL)
+			// Draw the 'Opposing Force' image.
+			SPR_Set(gHUD.GetSprite(m_HUD_title_opposing), brightness * m_pGameTitle->r1, brightness * m_pGameTitle->g1, brightness * m_pGameTitle->b1);
+			SPR_DrawAdditive(0, x, y + halfHeight, &gHUD.GetSpriteRect(m_HUD_title_opposing));
+
+			SPR_Set(gHUD.GetSprite(m_HUD_title_force), brightness * m_pGameTitle->r1, brightness * m_pGameTitle->g1, brightness * m_pGameTitle->b1);
+			SPR_DrawAdditive(0, x + halfWidth, y + halfHeight, &gHUD.GetSpriteRect(m_HUD_title_force));
+#endif
 			drawn = 1;
 		}
 	}

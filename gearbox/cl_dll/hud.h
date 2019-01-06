@@ -470,6 +470,10 @@ private:
 
 	int m_HUD_title_life;
 	int m_HUD_title_half;
+#if defined (GEARBOX_CLIENT_DLL)
+	int m_HUD_title_opposing;
+	int m_HUD_title_force;
+#endif
 };
 
 //

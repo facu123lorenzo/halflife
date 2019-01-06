@@ -232,6 +232,8 @@ void CPortal::UpdateBeams()
 
 #endif // !defined ( CLIENT_DLL )
 
+#define DISPLACER_EMPTY_SOUND "buttons/button11.wav"
+
 enum displacer_e {
 	DISPLACER_IDLE1 = 0,
 	DISPLACER_IDLE2,
@@ -287,7 +289,7 @@ BOOL CDisplacer::PlayEmptySound(void)
 {
 	if (m_iPlayEmptySound)
 	{
-		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "buttons/button11.wav", 1, ATTN_NORM);
+		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, DISPLACER_EMPTY_SOUND, 1, ATTN_NORM);
 		m_iPlayEmptySound = 0;
 		return 0;
 	}
@@ -309,14 +311,9 @@ void CDisplacer::Spawn()
 	m_iFireMode = FIREMODE_NONE;
 
 #ifndef CLIENT_DLL
-	edict_t* pEnt = NULL;
-	pEnt = FIND_ENTITY_BY_CLASSNAME(pEnt, "info_displacer_earth_target");
+	m_hTargetEarth = UTIL_FindEntityByClassname(m_hTargetEarth, "info_displacer_earth_target");
 
-	if (pEnt)
-	{
-		m_hTargetEarth = GetClassPtr((CBaseEntity *)VARS(pEnt));
-	}
-	else
+	if (!m_hTargetEarth)
 	{
 		ALERT(
 			at_console,
@@ -324,14 +321,9 @@ void CDisplacer::Spawn()
 			"info_displacer_earth_target");
 	}
 
-	pEnt = NULL;
-	pEnt = FIND_ENTITY_BY_CLASSNAME(pEnt, "info_displacer_xen_target");
+	m_hTargetXen = UTIL_FindEntityByClassname(m_hTargetXen, "info_displacer_xen_target");
 
-	if (pEnt)
-	{
-		m_hTargetXen = GetClassPtr((CBaseEntity *)VARS(pEnt));
-	}
-	else
+	if (!m_hTargetXen)
 	{
 		ALERT(
 			at_console,
@@ -363,7 +355,7 @@ void CDisplacer::Precache(void)
 	PRECACHE_SOUND("weapons/displacer_teleport.wav");
 	PRECACHE_SOUND("weapons/displacer_teleport_player.wav");
 
-	PRECACHE_SOUND("buttons/button11.wav");
+	PRECACHE_SOUND(DISPLACER_EMPTY_SOUND);
 
 	PRECACHE_MODEL("sprites/lgtning.spr");
 
@@ -649,9 +641,6 @@ void CDisplacer::Fire(BOOL fIsPrimary)
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.7f;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.7f;
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.7f;
-
-	// Decrement weapon ammunition.
-	UseAmmo(EGON_DEFAULT_GIVE);
 }
 
 //=========================================================
@@ -691,6 +680,9 @@ void CDisplacer::Displace( void )
 
 	CPortal::Shoot(pev, vecSrc, gpGlobals->v_forward * 400);
 #endif
+
+	// Decrement weapon ammunition.
+	UseAmmo(EGON_DEFAULT_GIVE);
 }
 
 //=========================================================
@@ -698,7 +690,11 @@ void CDisplacer::Displace( void )
 //=========================================================
 void CDisplacer::Teleport( void )
 {
-	ASSERT(m_hTargetEarth != NULL && m_hTargetXen);
+	if (!m_hTargetEarth || !m_hTargetXen)
+	{
+		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, DISPLACER_EMPTY_SOUND, 1, ATTN_NORM);
+		return;
+	}
 
 	CBaseEntity* pTarget = (!m_pPlayer->m_fInXen)
 		? m_hTargetXen
@@ -753,6 +749,9 @@ void CDisplacer::Teleport( void )
 		FIREMODE_BACKWARD,
 		0,
 		0);
+
+	// Decrement weapon ammunition.
+	UseAmmo(EGON_DEFAULT_GIVE);
 }
 
 //=========================================================
